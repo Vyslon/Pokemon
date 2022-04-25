@@ -337,7 +337,7 @@ function liste_vers_html(liste)
  * de son logo */
 function formate_titre(urlImage, nom, pNumero, capacites, types)
 {
-    return `<tr class="">
+    return `<tr class="pokemon" id="${pNumero}">
       <td>
         <img
           alt="${nom}"
@@ -359,8 +359,10 @@ function formate_titre(urlImage, nom, pNumero, capacites, types)
 /* Fonction permettant de charger des données depuis une ressource séparée */
 function charge_donnees(url, callback) {
   return fetch(url)
-    .then((response) => { console.log(response); return response.text() })
-    .then((txt) => {console.log(txt); return JSON.parse(txt)})
+    .then((response) => response.text())
+    .then((txt) => JSON.parse(txt))
+    // .then((response) => { console.log(response); return response.text() })
+    // .then((txt) => {console.log(txt); return JSON.parse(txt)})
     .then(callback);
 }
 
@@ -370,6 +372,7 @@ function charge_donnees(url, callback) {
 function majListePokemons(donnees)
 {
     document.getElementById('body').innerHTML = genereHtmlPokemons(donnees);
+    enregistreCallbacksPokemons();
 }
 
 /**
@@ -381,4 +384,99 @@ function genereHtmlPokemons(pokemons)
         pokemon.Name, pokemon.PokedexNumber,
         liste_vers_html(pokemon.Abilities),
         liste_vers_html(pokemon.Types))).join('\n');
+}
+
+/**
+ * Enregistre un callback onClick à chaque pokemon (faire différemment et
+ * utiliser enregistreCallbacks?)
+ */
+function enregistreCallbacksPokemons()
+{
+    const nbPokemons = document.getElementsByClassName('pokemon').length;
+    const tab = Array.from({length: nbPokemons}, (_, i) => i + 1);
+    tab.forEach(n => document.getElementById(n).onclick = function(){
+            detailsPokemon(n)});
+}
+
+/**
+ * Récupère les détails d'un pokémon à partir d'un numéro de pokédex puis
+ * affiche ses détails
+ */
+function detailsPokemon(pNumero)
+{
+    if (document.getElementsByClassName('is-selected').length > 0)
+    {
+        document.getElementsByClassName('is-selected').item(0).classList
+            .remove('is-selected');
+    }
+    document.getElementById(pNumero).classList.add('is-selected');
+    charge_donnees(`https://lifap5.univ-lyon1.fr/pokemon/${pNumero}`,
+        afficherDetailsPokemon);
+}
+
+
+function afficherDetailsPokemon(details)
+{
+    document.getElementsByClassName('card').item(0).innerHTML =
+        genererDetailsPokemon(details);
+}
+
+/**
+ * Génère les détails (HTML) d'un pokemon
+ */
+function genererDetailsPokemon(details)
+{
+    const capacites = liste_vers_html(details.Abilities);
+    const resistances = liste_vers_html(Object.keys(details.Against)
+        .filter(key => details.Against[key] < 1));
+    const faiblesses = liste_vers_html(Object.keys(details.Against)
+        .filter(key => details.Against[key] > 1));
+    // TODO : est-ce que la chaine de caractère est comptée dans la taille
+    // de la fonction ? (demander au prof ?) Si oui, trouver une solution
+    return `<div class="card">
+      <div class="card-header">
+        <div class="card-header-title">
+        ${details.JapaneseName} (#${details.PokedexNumber})</div>
+      </div>
+      <div class="card-content">
+        <article class="media">
+          <div class="media-content">
+            <h1 class="title">${details.Name}</h1>
+          </div>
+        </article>
+      </div>
+      <div class="card-content">
+        <article class="media">
+          <div class="media-content">
+            <div class="content has-text-left">
+              <p>Hit points: ${details.Hp}</p>
+              <h3>Abilities</h3>
+                ${capacites}
+              <h3>Resistant against</h3>
+                ${resistances}
+              <h3>Weak against</h3>
+                ${faiblesses}
+            </div>
+          </div>
+          <figure class="media-right">
+            <figure class="image is-475x475">
+              <img
+                class=""
+                src="${details.Images.Full}"
+                alt="${details.Name}"
+              />
+            </figure>
+          </figure>
+        </article>
+      </div>
+      <div class="card-footer">
+        <article class="media">
+          <div class="media-content">
+            <button class="is-success button" tabindex="0">
+              Ajouter à mon deck
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>`;
 }
