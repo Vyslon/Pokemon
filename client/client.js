@@ -294,7 +294,7 @@ function majPage(etatCourant) {
   console.log("CALL majPage");
   const page = generePage(etatCourant);
   document.getElementById("root").innerHTML = page.html;
-  majListePokemons();
+  charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', majListePokemons);
   enregistreCallbacks(page.callbacks);
 }
 
@@ -365,22 +365,20 @@ function charge_donnees(url, callback) {
 }
 
 /**
- * Utiliser des callback au lieu des then !? voir les TP
+ * Met à jour la liste des pokemons
  */
-function majListePokemons()
+function majListePokemons(donnees)
 {
-    //charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', majListePokemons)
-    fetch()
-       .then(response => response.json())
-       .then(pokemons =>
-       {
-           return pokemons.map(pokemon => formate_titre(pokemon.Images.Detail,
-               pokemon.Name, pokemon.PokedexNumber,
-               liste_vers_html(pokemon.Abilities),
-               liste_vers_html(pokemon.Types))).join('\n');
-       }).then(listePokemons =>
-       {
-           console.log(listePokemons);
-           document.getElementById('body').innerHTML = listePokemons;
-       });
+    document.getElementById('body').innerHTML = genereHtmlPokemons(donnees);
+}
+
+/**
+ * Génère le code HTML pour l'affichage de tous les pokemons
+ */
+function genereHtmlPokemons(pokemons)
+{
+    return pokemons.map(pokemon => formate_titre(pokemon.Images.Detail,
+        pokemon.Name, pokemon.PokedexNumber,
+        liste_vers_html(pokemon.Abilities),
+        liste_vers_html(pokemon.Types))).join('\n');
 }
