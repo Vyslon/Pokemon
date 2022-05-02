@@ -298,6 +298,18 @@ function majPage(etatCourant) {
   document.getElementById("search").oninput = function(){ 
     charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', rechercherPokemon);
   };
+  document.getElementById("#").onclick = function(){ 
+    visuelTri(document.getElementById("#"), "#");
+    charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', function(pokemons){
+      trierPokemons(pokemons, "#", "ASC");
+    });
+  };
+  document.getElementById("Name").onclick = function(){ 
+    visuelTri(document.getElementById("Name"), "Name");
+    charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', function(pokemons){
+      trierPokemons(pokemons, "Name", "ASC");
+    });
+  };
   charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', majListePokemons);
   enregistreCallbacks(page.callbacks);
 }
@@ -491,3 +503,78 @@ function rechercherPokemon(pokemons)
   majListePokemons(pokemons.filter(pokemon => pokemon.Name.includes(document.getElementById("search").value)));
 }
 
+function trierPokemons(pokemons, colonne, ordre)
+{
+  if(ordre == "ASC")
+  {
+    trierPokemonsAscendant(pokemons, colonne);
+    document.getElementById(colonne).onclick = function(){ 
+      visuelTri(document.getElementById(colonne));
+      charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', function(pokemons){
+        trierPokemons(pokemons, colonne, "DESC");
+      })};
+  }
+  else 
+  if(ordre == "DESC")
+  {
+    trierPokemonsDescendant(pokemons, colonne);
+    document.getElementById(colonne).onclick = function(){ 
+      visuelTri(document.getElementById(colonne));
+      charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', function(pokemons){
+        trierPokemons(pokemons, colonne, "ASC");
+      })};
+  }
+}
+
+function visuelTri(colonneActuelle)
+{
+  const colonneARetirer = colonneActuelle.id == "#" ? "Name" : "#";
+  if (colonneActuelle.innerHTML.includes("angle-up"))
+  {
+    colonneActuelle.innerHTML = colonneActuelle.innerHTML.replace("fa-angle-up", "fa-angle-down");
+  }
+  else if (colonneActuelle.innerHTML.includes("angle-down"))
+  {
+    colonneActuelle.innerHTML = colonneActuelle.innerHTML.replace("fa-angle-down", "fa-angle-up");
+  }
+  else
+  {
+    colonneActuelle.innerHTML += "<span class=\"icon\"><i class=\"fas fa-angle-down\"></i></span>";
+    
+  }
+  document.getElementById(colonneARetirer).innerHTML = "<span>" + colonneARetirer + "</span>";
+}
+
+function trierPokemonsAscendant(pokemons, colonne)
+{
+  if(colonne == "#")
+  {
+    pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? 1 : 0));
+    console.log(pokemons);
+    majListePokemons(pokemons);
+  }
+  else 
+  if (colonne == "Name")
+  {
+    pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? -1 : pokemon_1.Name > pokemon_2.Name ? 1 : 0));
+    console.log(pokemons);
+    majListePokemons(pokemons);
+  }
+}
+
+function trierPokemonsDescendant(pokemons, colonne)
+{
+  if(colonne == "#")
+  {
+    pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? 1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? -1 : 0));
+    console.log(pokemons);
+    majListePokemons(pokemons);
+  }
+  else 
+  if (colonne == "Name")
+  {
+    pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? 1 : pokemon_1.Name > pokemon_2.Name ? -1 : 0));
+    console.log(pokemons);
+    majListePokemons(pokemons);
+  }
+}
