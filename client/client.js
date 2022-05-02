@@ -294,6 +294,10 @@ function majPage(etatCourant) {
   console.log("CALL majPage");
   const page = generePage(etatCourant);
   document.getElementById("root").innerHTML = page.html;
+  // Mettre dans enregistreCallbacks ?
+  document.getElementById("search").oninput = function(){ 
+    charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', rechercherPokemon);
+  };
   charge_donnees('https://lifap5.univ-lyon1.fr/pokemon', majListePokemons);
   enregistreCallbacks(page.callbacks);
 }
@@ -480,3 +484,10 @@ function genererDetailsPokemon(details)
       </div>
     </div>`;
 }
+
+function rechercherPokemon(pokemons)
+{
+  console.log(document.getElementById("search").value);
+  majListePokemons(pokemons.filter(pokemon => pokemon.Name.includes(document.getElementById("search").value)));
+}
+
