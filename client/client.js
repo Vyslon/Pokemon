@@ -109,6 +109,7 @@ function genereModaleLoginFooter(etatCourant) {
   return {
     html: `
   <footer class="modal-card-foot" style="justify-content: flex-end">
+    <button id="btn-save-login-modal2" class="button">Sauvegarder</button>
     <button id="btn-close-login-modal2" class="button">Fermer</button>
   </footer>
   `,
@@ -116,6 +117,9 @@ function genereModaleLoginFooter(etatCourant) {
       "btn-close-login-modal2": {
         onclick: () => majEtatEtPage(etatCourant, { loginModal: false }),
       },
+      "btn-save-login-modal2": {
+        onclick: () => majEtatEtPage(etatCourant, { loginModal: false }) // ICI ON APPELLE LA FONCTIONNALITE ? MESSAGE ERREUR SI MAUVAISE CLE API + supprimer le bouton connexion
+      }
     },
   };
 }
@@ -324,7 +328,7 @@ function initClientPokemons() {
   console.log("CALL initClientPokemons");
   const etatInitial = {
     loginModal: true,
-    login: undefined,
+    login: "<input class=\"input\" type=\"password\" placeholder=\"Clé d'API\">",
     errLogin: undefined,
   };
 
