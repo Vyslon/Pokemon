@@ -461,7 +461,7 @@ function detailsPokemon(pNumero) {
             .remove('is-selected');
     }
     document.getElementById(pNumero).classList.add('is-selected');
-    charge_donnees(donnees.serverUrl + "/" + pNumero,
+    charge_donnees(donnees.serverUrlPokemons + "/" + pNumero,
         afficherDetailsPokemon);
 }
 
@@ -519,13 +519,6 @@ function genererDetailsPokemon(details) {
         </article>
       </div>
       <div class="card-footer">
-        <article class="media">
-          <div class="media-content">
-            <button class="is-success button" tabindex="0">
-              Ajouter à mon deck
-            </button>
-          </div>
-        </article>
       </div>
     </div>`;
 }
