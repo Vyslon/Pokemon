@@ -391,8 +391,13 @@ function liste_vers_html(liste) {
 }
 
 /** transforme un pokemon en une ligne de tableau à partir de :
- *son numéro dans le pokédex, son nom, ses capacités, son type et l'URL
- * de son logo */
+* @param {string} urlImage URL de l'image à afficher
+* @param {string} nom Nom du pokémon
+* @param {number} pNumero Numéro de pokédex du pokémon
+* @param {Object[]} capacites Capacités du pokémon
+* @param {Object[]} types Types du pokémon
+* @returns Code HTML d'une ligne détaillant un pokémon
+*/
 function formate_titre(urlImage, nom, pNumero, capacites, types) {
     return `<tr class="pokemon" id="${pNumero}">
       <td>
@@ -413,7 +418,11 @@ function formate_titre(urlImage, nom, pNumero, capacites, types) {
     </tr>`;
 }
 
-/* Fonction permettant de charger des données depuis une ressource séparée */
+/** Fonction permettant de charger des données depuis une ressource séparée
+* @param {string} url adresse URL à laquelle récupérer les données
+* @param {function} callback Callback qui gère la réponse du serveur
+* @returns Retour de la fonction de callback
+*/
 function charge_donnees(url, callback) {
     return fetch(url)
         .then((response) => response.text())
@@ -423,6 +432,7 @@ function charge_donnees(url, callback) {
 
 /**
  * Met à jour la liste des pokemons
+ * @param {Object[]} donnees Pokemons à afficher dans la liste
  */
 function majListePokemons(donnees) {
     document.getElementById('body').innerHTML = genereHtmlPokemons(donnees);
@@ -431,6 +441,8 @@ function majListePokemons(donnees) {
 
 /**
  * Génère le code HTML pour l'affichage de tous les pokemons
+ * @param {Object[]} pokemons Pokemons à partir desquels généré le code
+ * @returns Le code HTML permettant l'affichage des pokemons
  */
 function genereHtmlPokemons(pokemons) {
     return pokemons.map(pokemon => formate_titre(pokemon.Images.Detail,
@@ -454,6 +466,8 @@ function enregistreCallbacksPokemons() {
 /**
  * Récupère les détails d'un pokémon à partir d'un numéro de pokédex puis
  * affiche ses détails
+ * @param {number} pNumero Numéro de pokdex du pokemon (utilisé comme
+ * identifiant par l'API)
  */
 function detailsPokemon(pNumero) {
     if (document.getElementsByClassName('is-selected').length > 0) {
@@ -465,7 +479,10 @@ function detailsPokemon(pNumero) {
         afficherDetailsPokemon);
 }
 
-
+/**
+ * Affiche les détails du pokémon sélectionné dans un emplacement prévu
+ * @param {number} pNumero Numéro de pokdex du pokemon (utilisé comme
+ */
 function afficherDetailsPokemon(details) {
     document.getElementsByClassName('card').item(0).innerHTML =
         genererDetailsPokemon(details);
@@ -473,6 +490,8 @@ function afficherDetailsPokemon(details) {
 
 /**
  * Génère les détails (HTML) d'un pokemon
+ * @param {Object[]} details Informations du pokemon à détailler
+ * @returns code HTML contenant les détails du pokemon
  */
 function genererDetailsPokemon(details) {
     const capacites = liste_vers_html(details.Abilities);
@@ -523,17 +542,25 @@ function genererDetailsPokemon(details) {
     </div>`;
 }
 
+/**
+ * Filtre les pokemons selon le texte de la barre de recherche
+ */
 function rechercherPokemon() {
     if (donnees.pokemons.length < donnees.pokemonsBackUp.length) {
         donnees.pokemons = donnees.pokemonsBackUp;
     }
     donnees.rechercheActuelle = document.getElementById("search").value;
     if (document.getElementById("search").value == "") {
-        majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+        majListePokemons(donnees.pokemons
+            .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
     } else {
-        const pokemonsFiltres = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(document.getElementById("search").value.toLowerCase()));
-        majListePokemons(pokemonsFiltres.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
-        donnees.pokemonsAffiches = pokemonsFiltres.slice(0, Math.max(10, donnees.pokemonsAffiches.length));
+        const pokemonsFiltres = donnees.pokemons
+        .filter(pokemon => pokemon.Name.toLowerCase()
+        .includes(document.getElementById("search").value.toLowerCase()));
+        majListePokemons(pokemonsFiltres
+            .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+        donnees.pokemonsAffiches = pokemonsFiltres
+            .slice(0, Math.max(10, donnees.pokemonsAffiches.length));
     }
 }
 
@@ -597,19 +624,22 @@ function loadPokemons(pokemons) {
 }
 
 function ajouterPokemons() {
-    const nbPokemons = donnees.pokemonsAffiches.length;
-    majListePokemons(donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())));
-    donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));
+    if((donnees.pokemonsAffiches.length % 10) === 0)
+    {
+        const nbPokemons = donnees.pokemonsAffiches.length;
+        majListePokemons(donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())));
+        donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));
+    }
 }
 
 function retirerPokemons() {
     const nbPokemons = donnees.pokemonsAffiches.length;
     if (nbPokemons - 10 >= 10) {
-        majListePokemons(donnees.pokemons.slice(0, nbPokemons - 10));
-        donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons - 10);
+        majListePokemons(donnees.pokemons.slice(0, nbPokemons - 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())));
+        donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons - 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));
     } else {
-        majListePokemons(donnees.pokemons.slice(0, 10));
-        donnees.pokemonsAffiches = donnees.pokemons.slice(0, 10);
+        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10));
+        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, 10));
     }
 }
 
