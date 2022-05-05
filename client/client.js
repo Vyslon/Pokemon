@@ -456,7 +456,8 @@ function genereHtmlPokemons(pokemons) {
  * utiliser enregistreCallbacks?)
  */
 function enregistreCallbacksPokemons() {
-    Array.from(document.getElementsByClassName('pokemon')).forEach((pokemon) => {
+    Array.from(document.getElementsByClassName('pokemon')).forEach((pokemon) =>
+    {
         pokemon.onclick = function() {
             detailsPokemon(pokemon.id)
         }
