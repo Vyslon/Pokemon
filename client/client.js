@@ -123,9 +123,9 @@ function genereModaleLoginFooter(etatCourant) {
             },
             "btn-save-login-modal2": {
                 onclick: () => {
-                    //majEtatEtPage(etatCourant, { loginModal: false });
-                    connexion(etatCourant, document.getElementById("api_key").value);
-                } // ICI ON APPELLE LA FONCTIONNALITE ? MESSAGE ERREUR SI MAUVAISE CLE API + supprimer le bouton connexion
+                    connexion(etatCourant,
+                        document.getElementById("api_key").value);
+                }
             }
         },
     };
@@ -564,113 +564,217 @@ function rechercherPokemon() {
     }
 }
 
+/**
+* Tri une liste de pokemons
+* @param {Object[]} pokemons Liste de pokemons à trier
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+* @param {string} ordre Ordre du tri
+* @returns Les premiers éléments de la liste de pokemons triée (dépend du
+* nombre de pokemons déjà affichés)
+*/
 function trierPokemons(pokemons, colonne, ordre) {
     if (ordre == "ASC") {
         document.getElementById(colonne).onclick = function() {
             visuelTri(document.getElementById(colonne));
-            majListePokemons(trierPokemons(pokemons, colonne, "DESC").slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+            majListePokemons(trierPokemons(pokemons, colonne, "DESC")
+            .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
         };
-        return trierPokemonsAscendant(pokemons, colonne).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));;
+        return trierPokemonsAscendant(pokemons, colonne)
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase()));;
     } else if (ordre == "DESC") {
         document.getElementById(colonne).onclick = function() {
             visuelTri(document.getElementById(colonne));
-            majListePokemons(trierPokemons(pokemons, colonne, "ASC").slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+            majListePokemons(trierPokemons(pokemons, colonne, "ASC")
+            .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
         };
-        return trierPokemonsDescendant(pokemons, colonne).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));;
+        return trierPokemonsDescendant(pokemons, colonne)
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase()));;
     }
 }
 
+/**
+* Gère la partie visuelle de la gestion du tri
+* (apparition/disparition des flèches)
+* @param {string} colonneActuelle Colonne sur laquelle on veut effectuer le tri
+*/
 function visuelTri(colonneActuelle) {
     if (colonneActuelle.innerHTML.includes("angle-up")) {
-        colonneActuelle.innerHTML = colonneActuelle.innerHTML.replace("fa-angle-up", "fa-angle-down");
+        colonneActuelle.innerHTML = colonneActuelle.innerHTML
+            .replace("fa-angle-up", "fa-angle-down");
     } else if (colonneActuelle.innerHTML.includes("angle-down")) {
-        colonneActuelle.innerHTML = colonneActuelle.innerHTML.replace("fa-angle-down", "fa-angle-up");
+        colonneActuelle.innerHTML = colonneActuelle.innerHTML
+            .replace("fa-angle-down", "fa-angle-up");
     } else {
         for (const arrow of document.getElementsByClassName("icon")) {
             arrow.remove();
         }
-        colonneActuelle.innerHTML += "<span class=\"icon\"><i class=\"fas fa-angle-up\"></i></span>";
+        colonneActuelle.innerHTML +=
+            "<span class=\"icon\"><i class=\"fas fa-angle-up\"></i></span>";
     }
 }
 
+/**
+* Tri une liste de pokemons en ordre croissant
+* @param {Object[]} pokemons Liste de pokemons à trier
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+* @returns Les premiers éléments de la liste de pokemons triée (dépend du
+* nombre de pokemons déjà affichés)
+*/
 function trierPokemonsAscendant(pokemons, colonne) {
     if (colonne == "#") {
-        return pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? 1 : 0));
-
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber
+                ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber
+                ? 1 : 0));
     } else
     if (colonne == "Name") {
-        return pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? -1 : pokemon_1.Name > pokemon_2.Name ? 1 : 0));
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            (pokemon_1.Name < pokemon_2.Name
+                ? -1 : pokemon_1.Name > pokemon_2.Name ? 1 : 0));
     } else {
-        return pokemons.sort((pokemon_1, pokemon_2) => triRecursifAscendant(pokemon_1, pokemon_2, 0, colonne));
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            triRecursifAscendant(pokemon_1, pokemon_2, 0, colonne));
     }
 }
 
+/**
+* Tri une liste de pokemons en ordre décroissant
+* @param {Object[]} pokemons Liste de pokemons à trier
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+* @returns Les premiers éléments de la liste de pokemons triée (dépend du
+* nombre de pokemons déjà affichés)
+*/
 function trierPokemonsDescendant(pokemons, colonne) {
     if (colonne == "#") {
-        return pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? 1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? -1 : 0));
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber
+                ? 1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber
+                ? -1 : 0));
     } else
     if (colonne == "Name") {
-        return pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? 1 : pokemon_1.Name > pokemon_2.Name ? -1 : 0));
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            (pokemon_1.Name < pokemon_2.Name
+                ? 1 : pokemon_1.Name > pokemon_2.Name ? -1 : 0));
     } else {
-        return pokemons.sort((pokemon_1, pokemon_2) => triRecursifDescendant(pokemon_1, pokemon_2, 0, colonne));
+        return pokemons.sort((pokemon_1, pokemon_2) =>
+            triRecursifDescendant(pokemon_1, pokemon_2, 0, colonne));
     }
 }
 
+/**
+* Stocke les pokemons récupérés depuis le serveur et affiche les 10 premiers
+* @param {Object[]} pokemons Liste des pokemons récupérés du serveur
+*/
 function loadPokemons(pokemons) {
     donnees.pokemons = pokemons;
     donnees.pokemonsBackUp = pokemons;
-    donnees.pokemonsAffiches = donnees.pokemons.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? 1 : 0)).slice(0, 10);
+    donnees.pokemonsAffiches = donnees.pokemons
+        .sort((pokemon_1, pokemon_2) =>
+            (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber
+                ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber
+                ? 1 : 0)).slice(0, 10);
     majListePokemons(donnees.pokemonsAffiches);
 }
 
+/**
+* Ajoute (si possible) 10 pokemons à la liste actuelle des pokemons affichés
+*/
 function ajouterPokemons() {
     if((donnees.pokemonsAffiches.length % 10) === 0)
     {
         const nbPokemons = donnees.pokemonsAffiches.length;
-        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())).slice(0, nbPokemons + 10));
-        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons + 10));
+        majListePokemons(donnees.pokemons.filter(pokemon =>
+            pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase()))
+            .slice(0, nbPokemons + 10));
+        donnees.pokemonsAffiches = donnees.pokemons
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase())
+            .slice(0, nbPokemons + 10));
     }
 }
 
+/**
+* Retire (si possible) 10 pokemons à la liste actuelle des pokemons affichés
+*/
 function retirerPokemons() {
     const nbPokemons = donnees.pokemonsAffiches.length;
     if (nbPokemons - 10 >= 10) {
-        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons - 10)));
-        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons - 10));
+        majListePokemons(donnees.pokemons.filter(pokemon =>
+            pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase())
+            .slice(0, nbPokemons - 10)));
+        donnees.pokemonsAffiches = donnees.pokemons
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase())
+            .slice(0, nbPokemons - 10));
     } else {
-        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10));
-        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, 10));
+        majListePokemons(donnees.pokemons
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10));
+        donnees.pokemonsAffiches = donnees.pokemons
+            .filter(pokemon => pokemon.Name.toLowerCase()
+            .includes(donnees.rechercheActuelle.toLowerCase()).slice(0, 10));
     }
 }
 
+/**
+* Fonction de tri de liste de liste récursive (utilisé pour trier les champs
+* Abilities et Type) dans l'ordre croissant
+* @param {Object[]} pokemon_1 Premier pokemon à comparer
+* @param {Object[]} pokemon_2 Second pokemon à comparer
+* @param {number} index Index actuel dans la colonne donnée
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+*/
 function triRecursifAscendant(pokemon_1, pokemon_2, index, colonne) {
     if (pokemon_1[colonne][index] === pokemon_2[colonne][index]) {
         if (pokemon_1[colonne][index + 1] !== undefined) {
-            return pokemon_2[colonne][index + 1] !== undefined ? triRecursifAscendant(pokemon_1, pokemon_2, index + 1, colonne) : 1;
+            return pokemon_2[colonne][index + 1] !== undefined ?
+            triRecursifAscendant(pokemon_1, pokemon_2, index + 1, colonne) : 1;
         } else if (pokemon_2[colonne][index + 1] !== undefined) {
             return -1;
         } else {
             return 0;
         }
     } else {
-        return (pokemon_1[colonne][index] < pokemon_2[colonne][index]) ? -1 : pokemon_1[colonne][index] > pokemon_2[colonne][index] ? 1 : 0;
+        return (pokemon_1[colonne][index] < pokemon_2[colonne][index])
+        ? -1 : pokemon_1[colonne][index] > pokemon_2[colonne][index] ? 1 : 0;
     }
 }
 
+/**
+* Fonction de tri de liste de liste récursive (utilisé pour trier les champs
+* Abilities et Type) dans l'ordre décroissant
+* @param {Object[]} pokemon_1 Premier pokemon à comparer
+* @param {Object[]} pokemon_2 Second pokemon à comparer
+* @param {number} index Index actuel dans la colonne donnée
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+*/
 function triRecursifDescendant(pokemon_1, pokemon_2, index, colonne) {
     if (pokemon_1[colonne][index] === pokemon_2[colonne][index]) {
         if (pokemon_1[colonne][index + 1] !== undefined) {
-            return pokemon_2[colonne][index + 1] !== undefined ? triRecursifDescendant(pokemon_1, pokemon_2, index + 1, colonne) : -1;
+            return pokemon_2[colonne][index + 1] !== undefined
+            ? triRecursifDescendant(pokemon_1, pokemon_2, index + 1, colonne)
+            : -1;
         } else if (pokemon_2[colonne][index + 1] !== undefined) {
             return 1;
         } else {
             return 0;
         }
     } else {
-        return (pokemon_1[colonne][index] < pokemon_2[colonne][index]) ? 1 : pokemon_1[colonne][index] > pokemon_2[colonne][index] ? -1 : 0;
+        return (pokemon_1[colonne][index] < pokemon_2[colonne][index])
+            ? 1 : pokemon_1[colonne][index] > pokemon_2[colonne][index]
+            ? -1 : 0;
     }
 }
 
+/**
+ * Fait une requête GET authentifiée sur /whoami
+ * @param {string} apiKeyC Clé d'API fournie par l'utilisateur
+ * @returns une promesse du login utilisateur ou du message d'erreur
+ */
 function fetchWhoamiCustom(apiKeyC) {
     return fetch(donnees.serverUrl + "/whoami", {
             headers: {
@@ -693,6 +797,12 @@ function fetchWhoamiCustom(apiKeyC) {
         }));
 }
 
+/**
+ * Traite la promesse renvoyée par fetchWhoamiCustom (modifie l'état courant
+ * dans le cas d'une erreur ou d'une identification correcte)
+ * @param {Etat} etatCourant L'état courant
+ * @param {string} apiKeyC Clé d'API fournie par l'utilisateur
+ */
 function connexion(etatCourant, apiKeyC) {
     return fetchWhoamiCustom(apiKeyC)
         .then((data) => {
