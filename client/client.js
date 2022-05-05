@@ -44,7 +44,7 @@ function lanceWhoamiEtInsereLogin(etatCourant) {
     majEtatEtPage(etatCourant, {
       login: data.user, // qui vaut undefined en cas d'erreur
       errLogin: data.err, // qui vaut undefined si tout va bien
-      loginModal: true, // on affiche la modale
+      loginModal: false, // on affiche la modale
     });
   });
 }
@@ -302,15 +302,24 @@ function majPage(etatCourant) {
   console.log("CALL majPage");
   const page = generePage(etatCourant);
   document.getElementById("root").innerHTML = page.html;
-  // Mettre dans enregistreCallbacks ?
   document.getElementById("search").oninput = rechercherPokemon;
-  
-  document.getElementById("#").onclick = function(){ 
-    visuelTri(document.getElementById("#"), "#");
+  document.getElementById("Image").onclick = function(){
+    visuelTri(document.getElementById("Image"));
+  };
+  document.getElementById("Abilities").onclick = function(){
+    visuelTri(document.getElementById("Abilities"));
+    trierPokemons("Abilities", "ASC");
+  };
+  document.getElementById("Types").onclick = function(){
+    visuelTri(document.getElementById("Types"));
+    trierPokemons("Types", "ASC");
+  };
+  document.getElementById("#").onclick = function(){
+    visuelTri(document.getElementById("#"));
     trierPokemons("#", "ASC");
   };
-  document.getElementById("Name").onclick = function(){ 
-    visuelTri(document.getElementById("Name"), "Name");
+  document.getElementById("Name").onclick = function(){
+    visuelTri(document.getElementById("Name"));
     trierPokemons("Name", "ASC");
   };
   document.getElementById("ajouterPokemons").onclick = ajouterPokemons;
@@ -327,7 +336,7 @@ function majPage(etatCourant) {
 function initClientPokemons() {
   console.log("CALL initClientPokemons");
   const etatInitial = {
-    loginModal: true,
+    loginModal: false,
     login: "<input class=\"input\" type=\"password\" placeholder=\"Clé d'API\">",
     errLogin: undefined,
   };
@@ -528,16 +537,16 @@ function trierPokemons(colonne, ordre)
   if(ordre == "ASC")
   {
     trierPokemonsAscendant(colonne);
-    document.getElementById(colonne).onclick = function(){ 
+    document.getElementById(colonne).onclick = function(){
       visuelTri(document.getElementById(colonne));
       trierPokemons(colonne, "DESC");
     };
   }
-  else 
+  else
   if(ordre == "DESC")
   {
     trierPokemonsDescendant(colonne);
-    document.getElementById(colonne).onclick = function(){ 
+    document.getElementById(colonne).onclick = function(){
       visuelTri(document.getElementById(colonne));
       trierPokemons(colonne, "ASC");
     };
@@ -546,7 +555,6 @@ function trierPokemons(colonne, ordre)
 
 function visuelTri(colonneActuelle)
 {
-  const colonneARetirer = colonneActuelle.id == "#" ? "Name" : "#";
   if (colonneActuelle.innerHTML.includes("angle-up"))
   {
     colonneActuelle.innerHTML = colonneActuelle.innerHTML.replace("fa-angle-up", "fa-angle-down");
@@ -557,24 +565,31 @@ function visuelTri(colonneActuelle)
   }
   else
   {
-    colonneActuelle.innerHTML += "<span class=\"icon\"><i class=\"fas fa-angle-down\"></i></span>";
-    
+      for (const arrow of document.getElementsByClassName("icon"))
+      {
+          arrow.remove();
+      }
+      colonneActuelle.innerHTML += "<span class=\"icon\"><i class=\"fas fa-angle-down\"></i></span>";
   }
-  document.getElementById(colonneARetirer).innerHTML = "<span>" + colonneARetirer + "</span>";
 }
 
 function trierPokemonsAscendant(colonne)
 {
   if(colonne == "#")
   {
-    donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? 1 : 0));
-    majListePokemons(donnees.pokemonsActuels);
+        donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? -1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? 1 : 0));
+        majListePokemons(donnees.pokemonsActuels);
   }
-  else 
+  else
   if (colonne == "Name")
   {
-    donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? -1 : pokemon_1.Name > pokemon_2.Name ? 1 : 0));
-    majListePokemons(donnees.pokemonsActuels);
+        donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? -1 : pokemon_1.Name > pokemon_2.Name ? 1 : 0));
+        majListePokemons(donnees.pokemonsActuels);
+  }
+  else
+  {
+        donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => triRecursifAscendant(pokemon_1, pokemon_2, 0, colonne));
+        majListePokemons(donnees.pokemonsActuels);
   }
 }
 
@@ -585,11 +600,17 @@ function trierPokemonsDescendant(colonne)
     donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.PokedexNumber < pokemon_2.PokedexNumber ? 1 : pokemon_1.PokedexNumber > pokemon_2.PokedexNumber ? -1 : 0));
     majListePokemons(donnees.pokemonsActuels);
   }
-  else 
+  else
   if (colonne == "Name")
   {
     donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => (pokemon_1.Name < pokemon_2.Name ? 1 : pokemon_1.Name > pokemon_2.Name ? -1 : 0));
     majListePokemons(donnees.pokemonsActuels);
+  }
+  else
+  {
+        console.log(colonne);
+        donnees.pokemonsActuels.sort((pokemon_1, pokemon_2) => triRecursifDescendant(pokemon_1, pokemon_2, 0, colonne));
+        majListePokemons(donnees.pokemonsActuels);
   }
 }
 
@@ -620,4 +641,40 @@ function retirerPokemons()
     majListePokemons(donnees.pokemons.slice(0, 10));
     donnees.pokemonsActuels = donnees.pokemons.slice(0, 10);
   }
+}
+
+function triRecursifAscendant(pokemon_1, pokemon_2, index, colonne)
+{
+    if (pokemon_1[colonne][index] === pokemon_2[colonne][index]) {
+        if(pokemon_1[colonne][index + 1] !== undefined) {
+            return pokemon_2[colonne][index + 1] !== undefined ? triRecursifAscendant(pokemon_1, pokemon_2, index + 1, colonne) : 1;
+        }
+        else if(pokemon_2[colonne][index + 1] !== undefined) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    }
+    else {
+        return (pokemon_1[colonne][index] < pokemon_2[colonne][index]) ? -1 : pokemon_1[colonne][index] > pokemon_2[colonne][index] ? 1 : 0;
+    }
+}
+
+function triRecursifDescendant(pokemon_1, pokemon_2, index, colonne)
+{
+    if (pokemon_1[colonne][index] === pokemon_2[colonne][index]) {
+        if(pokemon_1[colonne][index + 1] !== undefined) {
+            return pokemon_2[colonne][index + 1] !== undefined ? triRecursifDescendant(pokemon_1, pokemon_2, index + 1, colonne) : -1;
+        }
+        else if(pokemon_2[colonne][index + 1] !== undefined) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    else {
+        return (pokemon_1[colonne][index] < pokemon_2[colonne][index]) ? 1 : pokemon_1[colonne][index] > pokemon_2[colonne][index] ? -1 : 0;
+    }
 }
