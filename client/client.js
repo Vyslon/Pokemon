@@ -627,16 +627,16 @@ function ajouterPokemons() {
     if((donnees.pokemonsAffiches.length % 10) === 0)
     {
         const nbPokemons = donnees.pokemonsAffiches.length;
-        majListePokemons(donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())));
-        donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons + 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));
+        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())).slice(0, nbPokemons + 10));
+        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons + 10));
     }
 }
 
 function retirerPokemons() {
     const nbPokemons = donnees.pokemonsAffiches.length;
     if (nbPokemons - 10 >= 10) {
-        majListePokemons(donnees.pokemons.slice(0, nbPokemons - 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())));
-        donnees.pokemonsAffiches = donnees.pokemons.slice(0, nbPokemons - 10).filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()));
+        majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons - 10)));
+        donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, nbPokemons - 10));
     } else {
         majListePokemons(donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10));
         donnees.pokemonsAffiches = donnees.pokemons.filter(pokemon => pokemon.Name.toLowerCase().includes(donnees.rechercheActuelle.toLowerCase()).slice(0, 10));
