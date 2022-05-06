@@ -303,6 +303,7 @@ function majEtatEtPage(etatCourant, champsMisAJour) {
  * dictionnaire qui associe des champs "on..." aux callbacks désirés.
  */
 function enregistreCallbacks(callbacks) {
+    console.log(callbacks);
     Object.keys(callbacks).forEach((id) => {
         const elt = document.getElementById(id);
         if (elt === undefined || elt === null) {
@@ -326,33 +327,16 @@ function majPage(etatCourant) {
     console.log("CALL majPage");
     const page = generePage(etatCourant);
     document.getElementById("root").innerHTML = page.html;
-    document.getElementById("search").oninput = rechercherPokemon;
-    document.getElementById("Image").onclick = function() {
-        visuelTri(document.getElementById("Image"));
-    };
-    document.getElementById("Abilities").onclick = function() {
-        visuelTri(document.getElementById("Abilities"));
-        donnees.pokemons = trierPokemons(donnees.pokemons, "Abilities", "ASC");
-        majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
-    };
-    document.getElementById("Types").onclick = function() {
-        visuelTri(document.getElementById("Types"));
-        donnees.pokemons = trierPokemons(donnees.pokemons, "Types", "ASC");
-        majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
-    };
-    document.getElementById("#").onclick = function() {
-        visuelTri(document.getElementById("#"));
-        donnees.pokemons = trierPokemons(donnees.pokemons, "#", "DESC");
-        majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
-    };
-    document.getElementById("Name").onclick = function() {
-        visuelTri(document.getElementById("Name"));
-        donnees.pokemons = trierPokemons(donnees.pokemons, "Name", "ASC");
-        majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
-    };
-    document.getElementById("ajouterPokemons").onclick = ajouterPokemons;
-    document.getElementById("retirerPokemons").onclick = retirerPokemons;
-    charge_donnees(donnees.serverUrlPokemons, loadPokemons);
+    enregistreCallbacks({
+        "ajouterPokemons": {
+            onclick: () => ajouterPokemons(),
+        },
+        "retirerPokemons": {
+            onclick: () => retirerPokemons(),
+        },
+        "search": {
+            oninput: () => rechercherPokemon(),
+    }});
     enregistreCallbacks(page.callbacks);
 }
 
@@ -369,7 +353,8 @@ function initClientPokemons() {
         errLogin: undefined,
         err: undefined
     };
-
+    charge_donnees(donnees.serverUrlPokemons, loadPokemons);
+    initCallbacks();
     majPage(etatInitial);
 }
 
@@ -598,7 +583,8 @@ function trierPokemons(pokemons, colonne, ordre) {
 /**
 * Gère la partie visuelle de la gestion du tri
 * (apparition/disparition des flèches)
-* @param {string} colonneActuelle Colonne sur laquelle on veut effectuer le tri
+* @param {Element} colonneActuelle Colonne sur laquelle on veut effectuer
+* le tri
 */
 function visuelTri(colonneActuelle) {
     if (colonneActuelle.innerHTML.includes("angle-up")) {
@@ -683,7 +669,7 @@ function loadPokemons(pokemons) {
 * Ajoute (si possible) 10 pokemons à la liste actuelle des pokemons affichés
 */
 function ajouterPokemons() {
-    if((donnees.pokemonsAffiches.length % 10) === 0)
+    if(donnees.pokemonsAffiches.length >= 10)
     {
         const nbPokemons = donnees.pokemonsAffiches.length;
         majListePokemons(donnees.pokemons.filter(pokemon =>
@@ -692,8 +678,8 @@ function ajouterPokemons() {
             .slice(0, nbPokemons + 10));
         donnees.pokemonsAffiches = donnees.pokemons
             .filter(pokemon => pokemon.Name.toLowerCase()
-            .includes(donnees.rechercheActuelle.toLowerCase())
-            .slice(0, nbPokemons + 10));
+            .includes(donnees.rechercheActuelle.toLowerCase()))
+            .slice(0, nbPokemons + 10);
     }
 }
 
@@ -705,19 +691,19 @@ function retirerPokemons() {
     if (nbPokemons - 10 >= 10) {
         majListePokemons(donnees.pokemons.filter(pokemon =>
             pokemon.Name.toLowerCase()
-            .includes(donnees.rechercheActuelle.toLowerCase())
-            .slice(0, nbPokemons - 10)));
+            .includes(donnees.rechercheActuelle.toLowerCase()))
+            .slice(0, nbPokemons - 10));
         donnees.pokemonsAffiches = donnees.pokemons
             .filter(pokemon => pokemon.Name.toLowerCase()
-            .includes(donnees.rechercheActuelle.toLowerCase())
-            .slice(0, nbPokemons - 10));
+            .includes(donnees.rechercheActuelle.toLowerCase()))
+            .slice(0, nbPokemons - 10);
     } else {
         majListePokemons(donnees.pokemons
             .filter(pokemon => pokemon.Name.toLowerCase()
             .includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10));
         donnees.pokemonsAffiches = donnees.pokemons
             .filter(pokemon => pokemon.Name.toLowerCase()
-            .includes(donnees.rechercheActuelle.toLowerCase()).slice(0, 10));
+            .includes(donnees.rechercheActuelle.toLowerCase())).slice(0, 10);
     }
 }
 
@@ -820,4 +806,36 @@ function connexion(etatCourant, apiKeyC) {
                 });
             }
         })
+}
+
+/**
+* Fonction de callback à appelé lorsqu'on clique sur une colonne
+* @param {string} colonne Colonne à partir de laquelle effectuer le tri
+* @param {string} ordre Ordre du tri
+*/
+function callbackTri(colonne, ordre) {
+  visuelTri(document.getElementById(colonne));
+  donnees.pokemons = trierPokemons(donnees.pokemons, colonne, ordre);
+  majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+}
+
+/**
+* Fonction d'initialisation des callbacks (à n'exécuter qu'une seule fois)
+*/
+function initCallbacks() {
+  document.getElementById("Image").onclick = function() {
+      visuelTri(document.getElementById("Image"));
+  };
+  document.getElementById("Abilities").onclick = function() {
+      callbackTri("Abilities", "ASC");
+  };
+  document.getElementById("Types").onclick = function() {
+      callbackTri("Types", "ASC");
+  };
+  document.getElementById("#").onclick = function() {
+      callbackTri("#", "DESC");
+  };
+  document.getElementById("Name").onclick = function() {
+      callbackTri("Name", "ASC");
+  };
 }
