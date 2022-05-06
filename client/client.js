@@ -340,7 +340,7 @@ function initClientPokemons() {
         err: undefined,
     };
     chargeDonnees(donnees.serverUrlPokemons, loadPokemons);
-    initCallbacks();
+    initCallbacks(0);
     majPage(etatInitial);
 }
 
@@ -550,18 +550,14 @@ function rechercherPokemon() {
 function trierPokemons(pokemons, colonne, ordre) {
     if (ordre == 'ASC') {
         document.getElementById(colonne).onclick = function() {
-            visuelTri(document.getElementById(colonne));
-            majListePokemons(trierPokemons(pokemons, colonne, 'DESC')
-                .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+            callbackTri(colonne, 'DESC');
         };
         return trierPokemonsAscendant(pokemons, colonne)
             .filter((pokemon) => pokemon.Name.toLowerCase()
                 .includes(donnees.rechercheActuelle.toLowerCase()));
     } else if (ordre == 'DESC') {
         document.getElementById(colonne).onclick = function() {
-            visuelTri(document.getElementById(colonne));
-            majListePokemons(trierPokemons(pokemons, colonne, 'ASC')
-                .slice(0, Math.max(10, donnees.pokemonsAffiches.length)));
+            callbackTri(colonne, 'DESC');
         };
         return trierPokemonsDescendant(pokemons, colonne)
             .filter((pokemon) => pokemon.Name.toLowerCase()
@@ -583,6 +579,7 @@ function visuelTri(colonneActuelle) {
         colonneActuelle.innerHTML = colonneActuelle.innerHTML
             .replace('fa-angle-down', 'fa-angle-up');
     } else {
+        initCallbacks(1);
         for (const arrow of document.getElementsByClassName('icon')) {
             arrow.remove();
         }
@@ -809,6 +806,8 @@ function connexion(etatCourant, apiKeyC) {
  * @param {string} ordre Ordre du tri
  */
 function callbackTri(colonne, ordre) {
+    donnees.colonneTriActuel = colonne;
+    donnees.ordreTriActuel = ordre;
     visuelTri(document.getElementById(colonne));
     donnees.pokemons = trierPokemons(donnees.pokemons, colonne, ordre);
     majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees
@@ -817,8 +816,9 @@ function callbackTri(colonne, ordre) {
 
 /**
  * Fonction d'initialisation des callbacks (à n'exécuter qu'une seule fois)
+ * @param {number} reset 1 si il faut réinitialiser les callbacks
  */
-function initCallbacks() {
+function initCallbacks(reset) {
     document.getElementById('Image').onclick = function() {
         visuelTri(document.getElementById('Image'));
     };
@@ -829,7 +829,10 @@ function initCallbacks() {
         callbackTri('Types', 'ASC');
     };
     document.getElementById('#').onclick = function() {
-        callbackTri('#', 'DESC');
+        if (reset === 1)
+            callbackTri('#', 'ASC');
+        else
+            callbackTri('#', 'DESC');
     };
     document.getElementById('Name').onclick = function() {
         callbackTri('Name', 'ASC');
