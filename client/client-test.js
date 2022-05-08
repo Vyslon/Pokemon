@@ -80,8 +80,10 @@ const listeDePokemons = [{
     "HeightM": 1,
     "Hp": 65,
     "Images": {
-        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/015.png",
-        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/015.png"
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/"
+        + "015.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/"
+        + "015.png"
     },
     "IsLegendary": 0,
     "JapaneseName": "Spearスピアー",
@@ -174,8 +176,10 @@ const listeDePokemons = [{
     "HeightM": 0.3,
     "Hp": 40,
     "Images": {
-        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/016.png",
-        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/016.png"
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/"
+        + "016.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/"
+        + "016.png"
     },
     "IsLegendary": 0,
     "JapaneseName": "Poppoポッポ",
@@ -219,7 +223,8 @@ suite("Tests pour la fonction formateTitre",
                       <td>
                         <img
                           alt='Blastoise'
-                          src='https://assets.pokemon.com/assets/cms2/img/pokedex/detail/009.png'
+                          src='https://assets.pokemon.com/assets/cms2/img/
+                          pokedex/detail/009.png'
                           width='64'
                         />
                       </td>
