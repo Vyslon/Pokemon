@@ -1,119 +1,507 @@
 // Tests unitaires pour mon Projet
-/**
-* TODO : à TESTER :
-* 
-*/
+const listeDePokemons = [{
+    "Abilities": ["Torrent", "Rain Dish"],
+    "Against": {
+        "Bug": 1,
+        "Dark": 1,
+        "Dragon": 1,
+        "Electric": 2,
+        "Fairy": 1,
+        "Fight": 1,
+        "Fire": 0.5,
+        "Flying": 1,
+        "Ghost": 1,
+        "Grass": 2,
+        "Ground": 1,
+        "Ice": 0.5,
+        "Normal": 1,
+        "Poison": 1,
+        "Psychic": 1,
+        "Rock": 1,
+        "Steel": 0.5,
+        "Water": 0.5
+    },
+    "Attack": 103,
+    "BaseEggSteps": 5120,
+    "BaseHappiness": 70,
+    "BaseTotal": 630,
+    "CaptureRate": 45,
+    "Classification": "",
+    "Defense": 120,
+    "ExperienceGrowth": 1059860,
+    "Generation": 1,
+    "HeightM": 1.6,
+    "Hp": 79,
+    "Images": {
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/009.png"
+    },
+    "IsLegendary": 0,
+    "JapaneseName": "Kamexカメックス",
+    "Name": "Blastoise",
+    "PercentageMale": 88.1,
+    "PokedexNumber": 9,
+    "SpAttack": 135,
+    "SpDefense": 115,
+    "Speed": 78,
+    "Types": ["water"],
+    "WeightKg": 85.5
+}, {
+    "Abilities": ["Swarm", "Sniper"],
+    "Against": {
+        "Bug": 0.5,
+        "Dark": 1,
+        "Dragon": 1,
+        "Electric": 1,
+        "Fairy": 0.5,
+        "Fight": 0.25,
+        "Fire": 2,
+        "Flying": 2,
+        "Ghost": 1,
+        "Grass": 0.25,
+        "Ground": 1,
+        "Ice": 1,
+        "Normal": 1,
+        "Poison": 0.5,
+        "Psychic": 2,
+        "Rock": 2,
+        "Steel": 1,
+        "Water": 1
+    },
+    "Attack": 150,
+    "BaseEggSteps": 3840,
+    "BaseHappiness": 70,
+    "BaseTotal": 495,
+    "CaptureRate": 45,
+    "Classification": "",
+    "Defense": 40,
+    "ExperienceGrowth": 1000000,
+    "Generation": 1,
+    "HeightM": 1,
+    "Hp": 65,
+    "Images": {
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/015.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/015.png"
+    },
+    "IsLegendary": 0,
+    "JapaneseName": "Spearスピアー",
+    "Name": "Beedrill",
+    "PercentageMale": 50,
+    "PokedexNumber": 15,
+    "SpAttack": 15,
+    "SpDefense": 80,
+    "Speed": 145,
+    "Types": ["bug", "poison"],
+    "WeightKg": 29.5
+}, {
+    "Abilities": ["Compoundeyes", "Tinted Lens"],
+    "Against": {
+        "Bug": 0.5,
+        "Dark": 1,
+        "Dragon": 1,
+        "Electric": 2,
+        "Fairy": 1,
+        "Fight": 0.25,
+        "Fire": 2,
+        "Flying": 2,
+        "Ghost": 1,
+        "Grass": 0.25,
+        "Ground": 0,
+        "Ice": 2,
+        "Normal": 1,
+        "Poison": 1,
+        "Psychic": 1,
+        "Rock": 4,
+        "Steel": 1,
+        "Water": 1
+    },
+    "Attack": 45,
+    "BaseEggSteps": 3840,
+    "BaseHappiness": 70,
+    "BaseTotal": 395,
+    "CaptureRate": 45,
+    "Classification": "",
+    "Defense": 50,
+    "ExperienceGrowth": 1000000,
+    "Generation": 1,
+    "HeightM": 1.1,
+    "Hp": 60,
+    "Images": {
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/012.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/012.png"
+    },
+    "IsLegendary": 0,
+    "JapaneseName": "Butterfreeバタフリー",
+    "Name": "Butterfree",
+    "PercentageMale": 50,
+    "PokedexNumber": 12,
+    "SpAttack": 90,
+    "SpDefense": 80,
+    "Speed": 70,
+    "Types": ["bug", "flying"],
+    "WeightKg": 32
+}, {
+    "Abilities": ["Keen Eye", "Tangled Feet", "Big Pecks"],
+    "Against": {
+        "Bug": 0.5,
+        "Dark": 1,
+        "Dragon": 1,
+        "Electric": 2,
+        "Fairy": 1,
+        "Fight": 1,
+        "Fire": 1,
+        "Flying": 1,
+        "Ghost": 0,
+        "Grass": 0.5,
+        "Ground": 0,
+        "Ice": 2,
+        "Normal": 1,
+        "Poison": 1,
+        "Psychic": 1,
+        "Rock": 2,
+        "Steel": 1,
+        "Water": 1
+    },
+    "Attack": 45,
+    "BaseEggSteps": 3840,
+    "BaseHappiness": 70,
+    "BaseTotal": 251,
+    "CaptureRate": 255,
+    "Classification": "",
+    "Defense": 40,
+    "ExperienceGrowth": 1059860,
+    "Generation": 1,
+    "HeightM": 0.3,
+    "Hp": 40,
+    "Images": {
+        "Full": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/016.png",
+        "Detail": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/016.png"
+    },
+    "IsLegendary": 0,
+    "JapaneseName": "Poppoポッポ",
+    "Name": "Pidgey",
+    "PercentageMale": 50,
+    "PokedexNumber": 16,
+    "SpAttack": 35,
+    "SpDefense": 35,
+    "Speed": 56,
+    "Types": ["normal", "flying"],
+    "WeightKg": 1.8
+}];
+const liste = ["Keen Eye", "Tangled Feet", "Big Pecks"];
 
-suite("Tests pour la fonction garde_entiers_pairs",
-      function() { // la suite est mise en place via un callback
+suite("Tests pour la fonction listeVersHtml",
+    function() {
+        test("On vérifie que le résultat est bien une chaîne de caractères",
+            function() {
+                chai.assert.deepEqual(typeof(listeVersHtml(liste)), 'string');
+            });
 
-        // Un premier test
-        test("On vérifie que le résultat ne contient que des entiers pairs",
-             function() { // fonction anonyme qui défini ce que le test va faire
-               const t = [1,2,3,4];
-               const resultat_attendu = [2,4];
-               chai.assert.deepEqual(garde_entiers_pairs(t), resultat_attendu);
-             });
+        test("On vérifie que la liste HTML est correctement générée",
+            function() {
+                const resultat_attendu = `<ul>\n<li>Keen Eye</li>\n` +
+                    `<li>Tangled Feet</li>\n<li>Big Pecks</li></ul>\n`;
+                chai.assert.deepEqual(listeVersHtml(liste), resultat_attendu);
+            });
+    });
 
-        // Un autre test
-        test("On vérifie que le résultat ne contient que des nombres",
-             function() {
-               const t = ["a","2",3,4];
-               garde_entiers_pairs(t).forEach(v => chai.assert.isNumber(v));
-             });
+suite("Tests pour la fonction formateTitre",
+    function() {
+        test(`On vérifie que le résultat est bien une chaîne de caractères`,
+            function() {
+                chai.assert.deepEqual(typeof(formateTitre(liste)), 'string');
+            });
 
-        // Test de non perte
-        test("On vérifie que tous les entiers pairs sont renvoyés",
-             function() {
-               const t = [2,4,6,8];
-               const resultat_attendu = [2,4,6,8];
-               chai.assert.deepEqual(garde_entiers_pairs(t), resultat_attendu);
-             });
-      });
+        test(`On vérifie que la ligne du pokemon a été est correctement
+                générée`,
+            function() {
+                const resultat_attendu = `<tr class='pokemon' id='9'>
+                      <td>
+                        <img
+                          alt='Blastoise'
+                          src='https://assets.pokemon.com/assets/cms2/img/pokedex/detail/009.png'
+                          width='64'
+                        />
+                      </td>
+                      <td><div class='content'>9</div></td>
+                      <td><div class='content'>Blastoise</div></td>
+                      <td>
+                        <ul>
+                <li>Torrent</li>
+                <li>Rain Dish</li></ul>
+
+                      </td>
+                      <td>
+                        <ul>
+                <li>water</li></ul>
+
+                      </td>
+                    </tr>`;
+
+                chai.assert.deepEqual(
+                    formateTitre(`https://assets.pokemon.com/assets/cms2/
+                           img/pokedex/detail/009.png`, `Blastoise`, 9,
+                        `<ul>\n<li>Torrent</li>\n<li>Rain Dish</li></ul>\n`,
+                        `<ul>\n<li>water</li></ul>\n`).replace(/\s/g, ''),
+                    resultat_attendu.replace(/\s/g, ''));
+            });
+    });
+
+suite("Tests pour la fonction genererDetailsPokemon",
+    function() {
+        test("On vérifie que le résultat est bien une chaîne de caractères",
+            function() {
+                chai.assert.deepEqual(typeof(
+                    genererDetailsPokemon(listeDePokemons[0])), 'string');
+            });
+
+        test("On vérifie que les détails du pokemon sont correctement générés",
+            function() {
+                const resultat_attendu = `<div class='card'>
+                  <div class='card-header'>
+                    <div class='card-header-title'>
+                    Kamexカメックス (#9)</div>
+                  </div>
+                      <div class='card-content'>
+                        <article class='media'>
+                          <div class='media-content'>
+                            <h1 class='title'>Blastoise</h1>
+                          </div>
+                        </article>
+                      </div>
+                      <div class='card-content'>
+                        <article class='media'>
+                          <div class='media-content'>
+                            <div class='content has-text-left'>
+                              <p>Hit points: 79</p>
+                              <h3>Abilities</h3>
+                                <ul>
+                                <li>Torrent</li>
+                                <li>Rain Dish</li></ul>
+
+                              <h3>Resistant against</h3>
+                                <ul>
+                                <li>Fire</li>
+                                <li>Ice</li>
+                                <li>Steel</li>
+                                <li>Water</li></ul>
+
+                              <h3>Weak against</h3>
+                                <ul>
+                                <li>Electric</li>
+                                <li>Grass</li></ul>
+
+                            </div>
+                          </div>
+                          <figure class='media-right'>
+                            <figure class='image is-475x475'>
+                              <img
+                                class=''
+                                src='https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png'
+                                alt='Blastoise'
+                              />
+                            </figure>
+                          </figure>
+                        </article>
+                      </div>
+                      <div class='card-footer'>
+                      </div>
+                    </div>`;
+                chai.assert.deepEqual(genererDetailsPokemon(
+                    listeDePokemons[0]).replace(/\s/g, ''),
+                    resultat_attendu.replace(/\s/g, ''));
+            });
+});
+
+suite("Tests pour la fonction trierPokemonsAscendant (tri croissant)",
+    function() {
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            numéro de pokédex`,
+            function() {
+                const resultat_attendu = [9, 12, 15, 16];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                    listeDePokemons, '#'), pokemon => pokemon.PokedexNumber),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            nom`,
+            function() {
+                const resultat_attendu = ["Beedrill", "Blastoise",
+                    "Butterfree", "Pidgey"];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                    listeDePokemons, 'Name'), pokemon => pokemon.Name),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            abilities`,
+            function() {
+                const resultat_attendu = [["Compoundeyes",
+                    "Tinted Lens"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
+                    ["Swarm", "Sniper"], ["Torrent", "Rain Dish"]];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                    listeDePokemons, 'Abilities'),
+                    pokemon => pokemon.Abilities),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            types`,
+            function() {
+                const resultat_attendu = [["bug", "flying"], ["bug",
+                    "poison"], ["normal", "flying"], ["water"]];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                    listeDePokemons, 'Types'), pokemon => pokemon.Types),
+                    resultat_attendu);
+        });
+});
+
+suite("Tests pour la fonction trierPokemonsDescendant (tri décroissant)",
+    function() {
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            numéro de pokédex`,
+            function() {
+                const resultat_attendu = [16, 15, 12, 9];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                    listeDePokemons, '#'), pokemon => pokemon.PokedexNumber),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            nom`,
+            function() {
+                const resultat_attendu = ["Pidgey", "Butterfree", "Blastoise",
+                    "Beedrill"];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                    listeDePokemons, 'Name'), pokemon => pokemon.Name),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            abilities`,
+            function() {
+                const resultat_attendu = [["Torrent", "Rain Dish"], ["Swarm",
+                    "Sniper"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
+                    ["Compoundeyes", "Tinted Lens"]];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                    listeDePokemons, 'Abilities'),
+                    pokemon => pokemon.Abilities),
+                    resultat_attendu);
+        });
+        test(`On vérifie que la liste de pokemons est correctement triée par
+            types`,
+            function() {
+                const resultat_attendu = [["water"], ["normal", "flying"],
+                    ["bug", "poison"], ["bug", "flying"]];
+
+                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                    listeDePokemons, 'Types'), pokemon => pokemon.Types),
+                    resultat_attendu);
+        });
+});
+
+
 
 suite("Tests pour la fonction trie_articles_date",
-      function() {
+    function() {
         test("On vérifie que les articles sont triés par date",
-        function() {
-          const donnees_exemple =
-      [
-          { "titre":"CM3 : programmation fonctionnelle en js",
-            "date": "2017-02-27",
-            "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
+            function() {
+                const donnees_exemple = [{
+                        "titre": "CM3 : programmation fonctionnelle en js",
+                        "date": "2017-02-27",
+                        "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
 
   Après avoir revu la définition de fonction, on abordera les fonctions renvoyées en résultat, ainsi que la l'utilisation de valeurs extérieures à la définition de la fonction.
 
-  Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`},
+  Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`
+                    },
 
-          { "titre": "CM1 : introduction à js (1/2)",
-            "date": "2017-01-30",
-            "contenu": `Ce cours décrit les bases du langage JavaScript.
+                    {
+                        "titre": "CM1 : introduction à js (1/2)",
+                        "date": "2017-01-30",
+                        "contenu": `Ce cours décrit les bases du langage JavaScript.
 
-  On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.` },
+  On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.`
+                    },
 
-          { "titre": "CM2 : introduction à js (2/2)",
-            "date": "2017-02-06",
-            "contenu": `Ce cours poursuit la présentation du langage Javascript.
+                    {
+                        "titre": "CM2 : introduction à js (2/2)",
+                        "date": "2017-02-06",
+                        "contenu": `Ce cours poursuit la présentation du langage Javascript.
 
-  Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`},
+  Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`
+                    },
 
-          { "titre": "CM4 : programmation asynchrone",
-            "date": "2017-03-06",
-            "contenu": `Ce cours aborde les notions de programmation asynchrone.
+                    {
+                        "titre": "CM4 : programmation asynchrone",
+                        "date": "2017-03-06",
+                        "contenu": `Ce cours aborde les notions de programmation asynchrone.
 
-  Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`},
+  Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`
+                    },
 
-          { "titre": "L'UE LIFAP5 est créée",
-            "date": "2016-09-01",
-            "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web." }
-          ];
-          const res = trie_articles_date(donnees_exemple);
-          chai.assert.deepEqual(res[0].date, "2016-09-01");
-          chai.assert.deepEqual(res.pop().date, "2017-03-06");
-      });
+                    {
+                        "titre": "L'UE LIFAP5 est créée",
+                        "date": "2016-09-01",
+                        "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web."
+                    }
+                ];
+                const res = trie_articles_date(donnees_exemple);
+                chai.assert.deepEqual(res[0].date, "2016-09-01");
+                chai.assert.deepEqual(res.pop().date, "2017-03-06");
+            });
 
 
-});
+    });
 
 suite("Tests pour la fonction filtre_mois_annee",
-function() {
-  test("On vérifie que les articles sont bien filtrés",
-  function() {
-    const donnees_exemple =
-[
-    { "titre":"CM3 : programmation fonctionnelle en js",
-      "date": "2017-02-27",
-      "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
+    function() {
+        test("On vérifie que les articles sont bien filtrés",
+            function() {
+                const donnees_exemple = [{
+                        "titre": "CM3 : programmation fonctionnelle en js",
+                        "date": "2017-02-27",
+                        "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
 
 Après avoir revu la définition de fonction, on abordera les fonctions renvoyées en résultat, ainsi que la l'utilisation de valeurs extérieures à la définition de la fonction.
 
-Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`},
+Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`
+                    },
 
-    { "titre": "CM1 : introduction à js (1/2)",
-      "date": "2017-01-30",
-      "contenu": `Ce cours décrit les bases du langage JavaScript.
+                    {
+                        "titre": "CM1 : introduction à js (1/2)",
+                        "date": "2017-01-30",
+                        "contenu": `Ce cours décrit les bases du langage JavaScript.
 
-On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.` },
+On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.`
+                    },
 
-    { "titre": "CM2 : introduction à js (2/2)",
-      "date": "2017-02-06",
-      "contenu": `Ce cours poursuit la présentation du langage Javascript.
+                    {
+                        "titre": "CM2 : introduction à js (2/2)",
+                        "date": "2017-02-06",
+                        "contenu": `Ce cours poursuit la présentation du langage Javascript.
 
-Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`},
+Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`
+                    },
 
-    { "titre": "CM4 : programmation asynchrone",
-      "date": "2017-03-06",
-      "contenu": `Ce cours aborde les notions de programmation asynchrone.
+                    {
+                        "titre": "CM4 : programmation asynchrone",
+                        "date": "2017-03-06",
+                        "contenu": `Ce cours aborde les notions de programmation asynchrone.
 
-Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`},
+Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`
+                    },
 
-    { "titre": "L'UE LIFAP5 est créée",
-      "date": "2016-09-01",
-      "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web." }
-    ];
-    const res = filtre_mois_annee(donnees_exemple, "03", "2017");
-    chai.assert.deepEqual(res[0].date, "2017-03-06");
-  });
-});
-
-// TODO ajouter des suites de tests pour le 3.3
+                    {
+                        "titre": "L'UE LIFAP5 est créée",
+                        "date": "2016-09-01",
+                        "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web."
+                    }
+                ];
+                const res = filtre_mois_annee(donnees_exemple, "03", "2017");
+                chai.assert.deepEqual(res[0].date, "2017-03-06");
+            });
+    });
