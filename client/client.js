@@ -171,7 +171,7 @@ function genereBoutonConnexion(etatCourant) {
         'btn-open-logout-modal' } class='button is-light'>
       ${etatCourant.username === undefined ? 'Connexion' : 'Déconnexion'}</a>
       ${etatCourant.username !== undefined ?
-        `<strong>${etatCourant.username}</strong>` : ``}
+        `<strong>${etatCourant.username}</strong>` : ''}
       </div>
     </div>
   </div>`;

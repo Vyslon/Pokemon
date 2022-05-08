@@ -194,28 +194,28 @@ suite("Tests pour la fonction listeVersHtml",
     function() {
         test("On vérifie que le résultat est bien une chaîne de caractères",
             function() {
-                chai.assert.deepEqual(typeof(listeVersHtml(liste)), 'string');
+                chai.assert.deepEqual(typeof(listeVersHtml(liste)), "string");
             });
 
         test("On vérifie que la liste HTML est correctement générée",
             function() {
-                const resultat_attendu = `<ul>\n<li>Keen Eye</li>\n` +
-                    `<li>Tangled Feet</li>\n<li>Big Pecks</li></ul>\n`;
+                const resultat_attendu = "<ul>\n<li>Keen Eye</li>\n" +
+                    "<li>Tangled Feet</li>\n<li>Big Pecks</li></ul>\n";
                 chai.assert.deepEqual(listeVersHtml(liste), resultat_attendu);
             });
     });
 
 suite("Tests pour la fonction formateTitre",
     function() {
-        test(`On vérifie que le résultat est bien une chaîne de caractères`,
+        test("On vérifie que le résultat est bien une chaîne de caractères",
             function() {
-                chai.assert.deepEqual(typeof(formateTitre(liste)), 'string');
+                chai.assert.deepEqual(typeof(formateTitre(liste)), "string");
             });
 
         test(`On vérifie que la ligne du pokemon a été est correctement
                 générée`,
-            function() {
-                const resultat_attendu = `<tr class='pokemon' id='9'>
+        function() {
+            const resultat_attendu = `<tr class='pokemon' id='9'>
                       <td>
                         <img
                           alt='Blastoise'
@@ -238,13 +238,13 @@ suite("Tests pour la fonction formateTitre",
                       </td>
                     </tr>`;
 
-                chai.assert.deepEqual(
-                    formateTitre(`https://assets.pokemon.com/assets/cms2/
-                           img/pokedex/detail/009.png`, `Blastoise`, 9,
-                        `<ul>\n<li>Torrent</li>\n<li>Rain Dish</li></ul>\n`,
-                        `<ul>\n<li>water</li></ul>\n`).replace(/\s/g, ''),
-                    resultat_attendu.replace(/\s/g, ''));
-            });
+            chai.assert.deepEqual(
+                formateTitre("https://assets.pokemon.com/assets/cms2/"
+                + "img/pokedex/detail/009.png", "Blastoise", 9,
+                "<ul>\n<li>Torrent</li>\n<li>Rain Dish</li></ul>\n",
+                "<ul>\n<li>water</li></ul>\n").replace(/\s/g, ""),
+                resultat_attendu.replace(/\s/g, ""));
+        });
     });
 
 suite("Tests pour la fonction genererDetailsPokemon",
@@ -252,7 +252,7 @@ suite("Tests pour la fonction genererDetailsPokemon",
         test("On vérifie que le résultat est bien une chaîne de caractères",
             function() {
                 chai.assert.deepEqual(typeof(
-                    genererDetailsPokemon(listeDePokemons[0])), 'string');
+                    genererDetailsPokemon(listeDePokemons[0])), "string");
             });
 
         test("On vérifie que les détails du pokemon sont correctement générés",
@@ -308,200 +308,97 @@ suite("Tests pour la fonction genererDetailsPokemon",
                       </div>
                     </div>`;
                 chai.assert.deepEqual(genererDetailsPokemon(
-                    listeDePokemons[0]).replace(/\s/g, ''),
-                    resultat_attendu.replace(/\s/g, ''));
+                    listeDePokemons[0]).replace(/\s/g, ""),
+                resultat_attendu.replace(/\s/g, ""));
             });
-});
+    });
 
 suite("Tests pour la fonction trierPokemonsAscendant (tri croissant)",
     function() {
         test(`On vérifie que la liste de pokemons est correctement triée par
             numéro de pokédex`,
-            function() {
-                const resultat_attendu = [9, 12, 15, 16];
+        function() {
+            const resultat_attendu = [9, 12, 15, 16];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
-                    listeDePokemons, '#'), pokemon => pokemon.PokedexNumber),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                listeDePokemons, "#"), pokemon => pokemon.PokedexNumber),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             nom`,
-            function() {
-                const resultat_attendu = ["Beedrill", "Blastoise",
-                    "Butterfree", "Pidgey"];
+        function() {
+            const resultat_attendu = ["Beedrill", "Blastoise",
+                "Butterfree", "Pidgey"];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
-                    listeDePokemons, 'Name'), pokemon => pokemon.Name),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                listeDePokemons, "Name"), pokemon => pokemon.Name),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             abilities`,
-            function() {
-                const resultat_attendu = [["Compoundeyes",
-                    "Tinted Lens"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
-                    ["Swarm", "Sniper"], ["Torrent", "Rain Dish"]];
+        function() {
+            const resultat_attendu = [["Compoundeyes",
+                "Tinted Lens"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
+            ["Swarm", "Sniper"], ["Torrent", "Rain Dish"]];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
-                    listeDePokemons, 'Abilities'),
-                    pokemon => pokemon.Abilities),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                listeDePokemons, "Abilities"),
+            pokemon => pokemon.Abilities),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             types`,
-            function() {
-                const resultat_attendu = [["bug", "flying"], ["bug",
-                    "poison"], ["normal", "flying"], ["water"]];
+        function() {
+            const resultat_attendu = [["bug", "flying"], ["bug",
+                "poison"], ["normal", "flying"], ["water"]];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
-                    listeDePokemons, 'Types'), pokemon => pokemon.Types),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsAscendant(
+                listeDePokemons, "Types"), pokemon => pokemon.Types),
+            resultat_attendu);
         });
-});
+    });
 
 suite("Tests pour la fonction trierPokemonsDescendant (tri décroissant)",
     function() {
         test(`On vérifie que la liste de pokemons est correctement triée par
             numéro de pokédex`,
-            function() {
-                const resultat_attendu = [16, 15, 12, 9];
+        function() {
+            const resultat_attendu = [16, 15, 12, 9];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
-                    listeDePokemons, '#'), pokemon => pokemon.PokedexNumber),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                listeDePokemons, "#"), pokemon => pokemon.PokedexNumber),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             nom`,
-            function() {
-                const resultat_attendu = ["Pidgey", "Butterfree", "Blastoise",
-                    "Beedrill"];
+        function() {
+            const resultat_attendu = ["Pidgey", "Butterfree", "Blastoise",
+                "Beedrill"];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
-                    listeDePokemons, 'Name'), pokemon => pokemon.Name),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                listeDePokemons, "Name"), pokemon => pokemon.Name),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             abilities`,
-            function() {
-                const resultat_attendu = [["Torrent", "Rain Dish"], ["Swarm",
-                    "Sniper"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
-                    ["Compoundeyes", "Tinted Lens"]];
+        function() {
+            const resultat_attendu = [["Torrent", "Rain Dish"], ["Swarm",
+                "Sniper"], ["Keen Eye", "Tangled Feet", "Big Pecks"],
+            ["Compoundeyes", "Tinted Lens"]];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
-                    listeDePokemons, 'Abilities'),
-                    pokemon => pokemon.Abilities),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                listeDePokemons, "Abilities"),
+            pokemon => pokemon.Abilities),
+            resultat_attendu);
         });
         test(`On vérifie que la liste de pokemons est correctement triée par
             types`,
-            function() {
-                const resultat_attendu = [["water"], ["normal", "flying"],
-                    ["bug", "poison"], ["bug", "flying"]];
+        function() {
+            const resultat_attendu = [["water"], ["normal", "flying"],
+                ["bug", "poison"], ["bug", "flying"]];
 
-                chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
-                    listeDePokemons, 'Types'), pokemon => pokemon.Types),
-                    resultat_attendu);
+            chai.assert.deepEqual(Array.from(trierPokemonsDescendant(
+                listeDePokemons, "Types"), pokemon => pokemon.Types),
+            resultat_attendu);
         });
-});
-
-
-
-suite("Tests pour la fonction trie_articles_date",
-    function() {
-        test("On vérifie que les articles sont triés par date",
-            function() {
-                const donnees_exemple = [{
-                        "titre": "CM3 : programmation fonctionnelle en js",
-                        "date": "2017-02-27",
-                        "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
-
-  Après avoir revu la définition de fonction, on abordera les fonctions renvoyées en résultat, ainsi que la l'utilisation de valeurs extérieures à la définition de la fonction.
-
-  Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`
-                    },
-
-                    {
-                        "titre": "CM1 : introduction à js (1/2)",
-                        "date": "2017-01-30",
-                        "contenu": `Ce cours décrit les bases du langage JavaScript.
-
-  On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.`
-                    },
-
-                    {
-                        "titre": "CM2 : introduction à js (2/2)",
-                        "date": "2017-02-06",
-                        "contenu": `Ce cours poursuit la présentation du langage Javascript.
-
-  Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`
-                    },
-
-                    {
-                        "titre": "CM4 : programmation asynchrone",
-                        "date": "2017-03-06",
-                        "contenu": `Ce cours aborde les notions de programmation asynchrone.
-
-  Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`
-                    },
-
-                    {
-                        "titre": "L'UE LIFAP5 est créée",
-                        "date": "2016-09-01",
-                        "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web."
-                    }
-                ];
-                const res = trie_articles_date(donnees_exemple);
-                chai.assert.deepEqual(res[0].date, "2016-09-01");
-                chai.assert.deepEqual(res.pop().date, "2017-03-06");
-            });
-
-
-    });
-
-suite("Tests pour la fonction filtre_mois_annee",
-    function() {
-        test("On vérifie que les articles sont bien filtrés",
-            function() {
-                const donnees_exemple = [{
-                        "titre": "CM3 : programmation fonctionnelle en js",
-                        "date": "2017-02-27",
-                        "contenu": `Ce cours introduit les notions de programmation avec des fonctions d'ordre supérieur.
-
-Après avoir revu la définition de fonction, on abordera les fonctions renvoyées en résultat, ainsi que la l'utilisation de valeurs extérieures à la définition de la fonction.
-
-Outre la manipulation des fonctions commes objets de première classe, la notion de fermeture est un des principaux concepts à retenir de ce cours.`
-                    },
-
-                    {
-                        "titre": "CM1 : introduction à js (1/2)",
-                        "date": "2017-01-30",
-                        "contenu": `Ce cours décrit les bases du langage JavaScript.
-
-On y verra en particulier les valeurs, les types, les structures de tableau et de dictionnaire. Enfin on abordera la définition des fonctions et les méthodes.`
-                    },
-
-                    {
-                        "titre": "CM2 : introduction à js (2/2)",
-                        "date": "2017-02-06",
-                        "contenu": `Ce cours poursuit la présentation du langage Javascript.
-
-Dans ce cours, on abordera les APIs de chaînes de caractères et de tableaux, ainsi que les fonctions passées en argument.`
-                    },
-
-                    {
-                        "titre": "CM4 : programmation asynchrone",
-                        "date": "2017-03-06",
-                        "contenu": `Ce cours aborde les notions de programmation asynchrone.
-
-Après quelques notions fondamentales sur les fonction introduites via le lamnbda-calcul, ce cours abordera des constructions standard de programmation asynchrone, telle que les callbacks et les promesses.`
-                    },
-
-                    {
-                        "titre": "L'UE LIFAP5 est créée",
-                        "date": "2016-09-01",
-                        "contenu": "Création de l'UE LIFAP5: programmation fonctionnelle pour le Web.\n\nCette UE aborde la programmation fonctionnelle à travers Javascript et la programmation Web."
-                    }
-                ];
-                const res = filtre_mois_annee(donnees_exemple, "03", "2017");
-                chai.assert.deepEqual(res[0].date, "2017-03-06");
-            });
     });
