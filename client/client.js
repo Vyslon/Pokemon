@@ -5,11 +5,8 @@ const donnees = {
     serverUrl: 'https://lifap5.univ-lyon1.fr',
     serverUrlPokemons: 'https://lifap5.univ-lyon1.fr/pokemon',
     pokemons: [],
-    pokemonsBackUp: [],
     pokemonsAffiches: [],
     rechercheActuelle: '',
-    colonneTriActuel: '',
-    ordreTriActuel: '',
     nbPokemons: 10,
 };
 
@@ -521,10 +518,6 @@ function genererDetailsPokemon(details) {
  * Filtre les pokemons selon le texte de la barre de recherche
  */
 function rechercherPokemon() {
-    // if (donnees.pokemons.length < donnees.pokemonsBackUp.length) {
-    //     donnees.pokemons = trierPokemons(donnees.pokemonsBackUp,
-    //         donnees.colonneTriActuel, donnees.ordreTriActuel);
-    // }
     donnees.rechercheActuelle = document.getElementById('search').value;
     if (document.getElementById('search').value == '') {
         majListePokemons(donnees.pokemons
@@ -550,8 +543,6 @@ function rechercherPokemon() {
  * (dépend du nombre de pokemons déjà affichés)
  */
 function trierPokemons(pokemons, colonne, ordre) {
-    donnees.colonneTriActuel = colonne;
-    donnees.ordreTriActuel = ordre;
     if (ordre == 'ASC') {
         document.getElementById(colonne).onclick = function() {
             callbackTri(colonne, 'DESC');
@@ -643,7 +634,6 @@ function trierPokemonsDescendant(pokemons, colonne) {
  */
 function loadPokemons(pokemons) {
     donnees.pokemons = pokemons;
-    donnees.pokemonsBackUp = pokemons;
     donnees.pokemonsAffiches = donnees.pokemons
         .sort((pokemonA, pokemonB) =>
             (pokemonA.PokedexNumber < pokemonB.PokedexNumber ?
@@ -811,8 +801,6 @@ function connexion(etatCourant, apiKeyC) {
  * @param {string} ordre Ordre du tri
  */
 function callbackTri(colonne, ordre) {
-    donnees.colonneTriActuel = colonne;
-    donnees.ordreTriActuel = ordre;
     visuelTri(document.getElementById(colonne));
     donnees.pokemons = trierPokemons(donnees.pokemons, colonne, ordre);
     donnees.pokemonsAffiches = trierPokemons(donnees.pokemons, colonne,
