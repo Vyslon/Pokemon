@@ -521,10 +521,10 @@ function genererDetailsPokemon(details) {
  * Filtre les pokemons selon le texte de la barre de recherche
  */
 function rechercherPokemon() {
-    if (donnees.pokemons.length < donnees.pokemonsBackUp.length) {
-        donnees.pokemons = trierPokemons(donnees.pokemonsBackUp,
-            donnees.colonneTriActuel, donnees.ordreTriActuel);
-    }
+    // if (donnees.pokemons.length < donnees.pokemonsBackUp.length) {
+    //     donnees.pokemons = trierPokemons(donnees.pokemonsBackUp,
+    //         donnees.colonneTriActuel, donnees.ordreTriActuel);
+    // }
     donnees.rechercheActuelle = document.getElementById('search').value;
     if (document.getElementById('search').value == '') {
         majListePokemons(donnees.pokemons
@@ -556,16 +556,13 @@ function trierPokemons(pokemons, colonne, ordre) {
         document.getElementById(colonne).onclick = function() {
             callbackTri(colonne, 'DESC');
         };
-        return trierPokemonsAscendant(pokemons, colonne)
-            .filter((pokemon) => pokemon.Name.toLowerCase()
-                .includes(donnees.rechercheActuelle.toLowerCase()));
+        return trierPokemonsAscendant(pokemons, colonne);
+
     } else if (ordre == 'DESC') {
         document.getElementById(colonne).onclick = function() {
             callbackTri(colonne, 'ASC');
         };
-        return trierPokemonsDescendant(pokemons, colonne)
-            .filter((pokemon) => pokemon.Name.toLowerCase()
-                .includes(donnees.rechercheActuelle.toLowerCase()));
+        return trierPokemonsDescendant(pokemons, colonne);
     }
 }
 
@@ -659,7 +656,10 @@ function loadPokemons(pokemons) {
  * Ajoute (si possible) 10 pokemons à la liste actuelle des pokemons affichés
  */
 function ajouterPokemons() {
-    donnees.nbPokemons += 10;
+    if (donnees.nbPokemons <=  791)
+    {
+        donnees.nbPokemons += 10;
+    }
     majListePokemons(donnees.pokemons.filter((pokemon) =>
         pokemon.Name.toLowerCase()
             .includes(donnees.rechercheActuelle.toLowerCase()))
@@ -674,7 +674,10 @@ function ajouterPokemons() {
  * Retire (si possible) 10 pokemons à la liste actuelle des pokemons affichés
  */
 function retirerPokemons() {
-    donnees.nbPokemons -= 10;
+    if (donnees.nbPokemons >= 20)
+    {
+        donnees.nbPokemons -= 10;
+    }
     if (donnees.pokemonsAffiches.length - 10 >= 10) {
         majListePokemons(donnees.pokemons.filter((pokemon) =>
             pokemon.Name.toLowerCase()
@@ -812,8 +815,11 @@ function callbackTri(colonne, ordre) {
     donnees.ordreTriActuel = ordre;
     visuelTri(document.getElementById(colonne));
     donnees.pokemons = trierPokemons(donnees.pokemons, colonne, ordre);
-    majListePokemons(donnees.pokemons.slice(0, Math.max(10, donnees
-        .pokemonsAffiches.length)));
+    donnees.pokemonsAffiches = trierPokemons(donnees.pokemons, colonne,
+        ordre).filter((pokemon) => pokemon.Name.toLowerCase()
+        .includes(donnees.rechercheActuelle.toLowerCase()))
+        .slice(0, Math.max(10, donnees.pokemonsAffiches.length));
+    majListePokemons(donnees.pokemonsAffiches);
 }
 
 /**
