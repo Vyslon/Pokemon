@@ -522,7 +522,8 @@ function genererDetailsPokemon(details) {
  */
 function rechercherPokemon() {
     if (donnees.pokemons.length < donnees.pokemonsBackUp.length) {
-        donnees.pokemons = donnees.pokemonsBackUp;
+        donnees.pokemons = trierPokemons(donnees.pokemonsBackUp,
+            donnees.colonneTriActuel, donnees.ordreTriActuel);
     }
     donnees.rechercheActuelle = document.getElementById('search').value;
     if (document.getElementById('search').value == '') {
@@ -549,6 +550,8 @@ function rechercherPokemon() {
  * (dépend du nombre de pokemons déjà affichés)
  */
 function trierPokemons(pokemons, colonne, ordre) {
+    donnees.colonneTriActuel = colonne;
+    donnees.ordreTriActuel = ordre;
     if (ordre == 'ASC') {
         document.getElementById(colonne).onclick = function() {
             callbackTri(colonne, 'DESC');
