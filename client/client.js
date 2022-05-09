@@ -523,10 +523,8 @@ function rechercherPokemon() {
         majListePokemons(donnees.pokemons
             .slice(0, Math.max(10, donnees.nbPokemons)));
     } else {
-        const pokemonsFiltres = donnees.pokemons
-            .filter((pokemon) => pokemon.Name.toLowerCase()
-                .includes(document.getElementById('search')
-                    .value.toLowerCase()));
+        const pokemonsFiltres = filtrerPokemons(donnees.pokemons, document
+            .getElementById('search').value);
         majListePokemons(pokemonsFiltres
             .slice(0, Math.max(10, donnees.nbPokemons)));
         donnees.pokemonsAffiches = pokemonsFiltres
@@ -830,4 +828,16 @@ function initCallbacks(reset) {
     document.getElementById('Name').onclick = function() {
         callbackTri('Name', 'ASC');
     };
+}
+
+/**
+* @param {Object[]} pokemons Liste de pokemons
+* @param {string} recherche Chaine de caractères à partir de laquelle faire
+* la recherche
+* @return {Object[]} Pokemons correspondants à la recherche
+*/
+function filtrerPokemons(pokemons, recherche)
+{
+    return pokemons.filter((pokemon) => pokemon.Name.toLowerCase()
+        .includes(recherche.toLowerCase()));
 }

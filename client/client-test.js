@@ -407,3 +407,27 @@ suite("Tests pour la fonction trierPokemonsDescendant (tri décroissant)",
             resultat_attendu);
         });
     });
+
+suite("Tests pour la fonction filtrerPokemons",
+    function() {
+        test("On vérifie que la liste de pokemons est correctement filtrée",
+            function() {
+                const resultat_attendu_1 = ["Beedrill", "Butterfree"];
+
+                chai.assert.deepEqual(Array.from(filtrerPokemons(
+                    listeDePokemons, "ee"), pokemon => pokemon.Name),
+                resultat_attendu_1);
+
+                const resultat_attendu_2 = ["Pidgey"];
+
+                chai.assert.deepEqual(Array.from(filtrerPokemons(
+                    listeDePokemons, "pi"), pokemon => pokemon.Name),
+                resultat_attendu_2);
+
+                const resultat_attendu_3 = ["Blastoise"];
+
+                chai.assert.deepEqual(Array.from(filtrerPokemons(
+                    listeDePokemons, "toise"), pokemon => pokemon.Name),
+                resultat_attendu_3);
+            });
+    });
