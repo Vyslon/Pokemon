@@ -1,6 +1,5 @@
-{    "authors": [
-        {
-            "name": "Thomas SANTONI",
-            "email": "santoni.thomas26@hotmail.fr"
-        }
-    ]}
+{
+    "require": {
+        "monolog/monolog": "2.0.*"
+    }
+}
